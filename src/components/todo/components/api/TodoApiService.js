@@ -8,5 +8,8 @@ const apiClent = axios.create(
   }
 )
 export const retrieveTodosBean 
-    = (username) => apiClent.get(`users/${username}/todos`);
+    = (username) => apiClent.get(`/users/${username}/todos`);
     //http://localhost:8080/users/in28minutes/todos
+
+export const deleteTodosApi 
+    = (username,id) => apiClent.delete(`/users/${username}/todos/${id}`);
