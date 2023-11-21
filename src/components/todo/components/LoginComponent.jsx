@@ -18,8 +18,8 @@ function LoginComponent(){
     setPassword(event.target.value);
   }
 
-  function handleSubmit(){
-    if (useContext.login(userName,password)){
+  async function handleSubmit(){
+    if (await useContext.login(userName,password)){
         navigate(`/welcome/${userName}`);  
         setshowErrorMessage(false);
     }else{
