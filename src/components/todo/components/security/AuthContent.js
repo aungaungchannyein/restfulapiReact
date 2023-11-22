@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react"
-import { executeBasicAuthenticationService } from "../api/HelloWorlldApiService";
+import { executeBasicAuthenticationService,executeJwtAuthenticationService } from "../api/AuthenticationApiService";
 import { apiClient } from "../api/ApiClient";
 
 export const AuthContext=createContext()
@@ -23,20 +23,55 @@ export default function AuthProvider({children}){
   //   }
   // }
  
-  async function login(userName,password){
+  // async function login(userName,password){
 
-    const baToken = 'Basic ' + window.btoa(userName+":"+password)
-    try{
-        const response = await executeBasicAuthenticationService(baToken)
+  //   const baToken = 'Basic ' + window.btoa(userName+":"+password)
+  //   try{
+  //       const response = await executeBasicAuthenticationService(baToken)
         
 
+  //       if (response.status ==200){
+  //           setUsername(userName);
+  //           setAuthenticated(true);
+  //           setToken(baToken);
+  //           apiClient.interceptors.request.use(
+  //             (config) =>{
+  //               config.headers.Authorization = baToken
+  //               return config
+  //             }
+  //           )
+  //           return true;  
+  //       }else{
+  //           logout()
+  //           return false;
+  //       }
+  //     }catch(error){
+  //       logout()
+  //       return false;
+
+  //     }
+  // }
+
+  // function logout(){
+  //   setAuthenticated(false);
+  //   setUsername(null);
+  //   setToken(null);
+  // }
+
+  async function login(userName,password){
+
+    try{
+        const response = await executeJwtAuthenticationService(userName,password)
+      
+
         if (response.status ==200){
+          const JwtToken = 'Bearer ' +response.data.token;
             setUsername(userName);
             setAuthenticated(true);
-            setToken(baToken);
+            setToken(JwtToken);
             apiClient.interceptors.request.use(
               (config) =>{
-                config.headers.Authorization = baToken
+                config.headers.Authorization = JwtToken
                 return config
               }
             )
